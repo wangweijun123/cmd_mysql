@@ -1,0 +1,279 @@
+1 安装数据mysql生成的默认密码
+
+
+root@localhost: dsCpuyIJr9%U
+                dsCpuyIJr9%U  亮是 小写abc 暗是大小
+2， 登录数据库
+
+mysql -u root -p 
+
+fygzcO.wh8qJ
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '新密码';
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+
+
+3，启动数据库才能登录数据库
+
+net start mysql（net stop mysql）
+
+mysql -u root -p
+
+输入密码 123456
+
+
+设置字符集
+
+set names gbk; 
+
+4, 
+create database wangweijun;
+
+
+create table Teacher(
+   
+  id INT NOT NULL AUTO_INCREMENT,
+  
+  name VARCHAR(100) NOT NULL,
+   
+  PRIMARY KEY ( id )
+
+);
+
+create table Student(
+   
+  id INT NOT NULL AUTO_INCREMENT,
+  
+  name VARCHAR(100) NOT NULL,
+   
+  PRIMARY KEY ( id )
+
+);
+
+
+create table Teacher_Student(
+   
+  id INT NOT NULL AUTO_INCREMENT,
+  
+  tid INT NOT NULL,
+   
+  sid INT NOT NULL,
+
+  PRIMARY KEY ( id )
+
+);
+
+
+ INSERT INTO tbl_name () VALUES();
+
+INSERT INTO tbl_name (col1,col2) VALUES(15,col1*2);
+
+insert into Teacher (name) values('张老师');
+insert into Teacher (name) values('王老师');
+insert into Teacher (name) values('任老师');
+select * from Teacher;
+
+
+insert into Student(name) values('张山');
+insert into Student(name) values('李四');
+insert into Student(name) values('王五');
+insert into Student(name) values('赵六');
+select * from Student;
+
+
+insert into Teacher_Student(tid, sid) values(1,1);
+insert into Teacher_Student(tid, sid) values(1,2);
+
+
+insert into Teacher_Student(tid, sid) values(2,1);
+insert into Teacher_Student(tid, sid) values(2,3);
+
+select * from Teacher_Student;
+
+
+
+
+mysql> select * from Teacher;
++----+--------+
+| id | name   |
++----+--------+
+|  1 | 张老师 |
+|  2 | 王老师 |
++----+--------+
+
+
+mysql> select * from Student;
++----+------+
+| id | name |
++----+------+
+|  1 | 张山 |
+|  2 | 李四 |
+|  3 | 王五 |
++----+------+
+
+mysql> select * from Teacher_Student;
++----+-----+-----+
+| id | tid | sid |
++----+-----+-----+
+|  1 |   1 |   1 |
+|  2 |   1 |   2 |
+|  3 |   2 |   1 |
+|  4 |   2 |   3 |
++----+-----+-----+
+
+
+问题查询张老师底下的所有学生
+
+(这里用到inner join)
+select Student.name from Student INNER JOIN Teacher_Student on Teacher_Student.sid=Student.id INNER JOIN Teacher on Teacher.name='王老师' and Teacher.id = Teacher_Student.tid;
+
+
+内连接，左连接，右连接
+
+内连接 : 参与查询的表必须都有数据才会保留  ***********************(精准匹配)************************************
+
+select Teacher_Student.sid, Student.name from Student INNER JOIN Teacher_Student on Teacher_Student.sid=Student.id INNER JOIN Teacher on  Teacher.id = Teacher_Student.tid;
+
+select  Teacher.name, Teacher_Student.sid, Teacher.id, Student.name from Student INNER JOIN Teacher_Student on Teacher_Student.sid=Student.id INNER JOIN Teacher on  Teacher.id = Teacher_Student.tid;
+
+
+
+
+
+外连接(左连接，右连接)
+
+
+
+左连接(左边的是主表，当没匹配到从表的数据时也会保留):  select * from 主表 left join 从表  on xxxx
+
+
+前提是数据库表中, 任老师没学生，赵六没老师的case
+
+select Teacher.name, Student.name from Teacher LEFT JOIN Teacher_Student on Teacher.id=Teacher_Student.tid LEFT JOIN Student on Student.id=Teacher_Student.sid;
+
++--------+------+
+| name   | name |
++--------+------+
+| 张老师 | 张山 |
+| 张老师 | 李四 |
+| 王老师 | 张山 |
+| 王老师 | 王五 |
+| 任老师 | NULL |
++--------+------+
+
+
+
+
+右连接
+
+select Teacher.name, Student.name from Teacher RIGHT JOIN Teacher_Student on Teacher.id=Teacher_Student.tid RIGHT JOIN Student on Student.id=Teacher_Student.sid;
+
++--------+------+
+| name   | name |
++--------+------+
+| 张老师 | 张山 |
+| 王老师 | 张山 |
+| 张老师 | 李四 |
+| 王老师 | 王五 |
+| NULL   | 赵六 |
++--------+------+
+
+
+-- 创建数据库
+create database mydb3 charset utf8;
+
+显示数据库
+show databases;
+
+show databases like '%db%';
+
+查看数据库创建语句
+show create database 数据库名字
+
+删除数据库
+
+drop database 名字
+
+
+创建表名
+
+create table 表名(
+   
+
+
+);
+
+
+create table xxxx(
+    name varchar(10)   
+);
+
+显示表结构
+
+desc xxxx;
+
+查看创建表语句
+show create table xxxx;
+
+
+rename table xxxx to mytable;
+
+修改表结构
+
+增加表字段
+alter table mytable add column age int;
+
+-- 修改字段名字
+
+alter table mytable change age nj int;
+
+-- 修改字段类型(注意有数据如果不能从varchar转换为int，那就是改不了数据类型)
+
+alter table mytable modify nj int;
+
+insert into mytable values('wwh', '15'); 
+
+
+删除表中所有数据
+delete from mytable;
+
+删除表
+drop table mytalbe;
+
+-- 
+插入数据
+insert into user values('www', 32);
+
+insert into user (name) values('wwj');
+
+
+查询数据
+select name from user;
+
+select name,age from user;
+
+
+select name,age from user where age>31;
+
+select name,age from user where age=31;
+
+select name,age from user where age>=31;
+
+
+删除数据
+delete from user where age>31;
+
+更新数据
+update user set age=100 where name='wwj';
+
+
+
+
+
+
+
+
+
+
+
