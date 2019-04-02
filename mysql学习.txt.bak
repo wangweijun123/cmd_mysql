@@ -150,7 +150,7 @@ select Teacher.name, Student.name from Student inner join Teacher_Student on Stu
 
 查询张山的所有老师
 
-select Teacher.name as tname, Student.name as sname from Teacher inner join Teacher_Student on Teacher.id=Teacher_Student.id inner join Student on Student.id=Teacher_Student.sid and Student.name='张山';
+select Teacher.name, Student.name from Teacher inner join Teacher_Student on Teacher.id=Teacher_Student.id inner join Student on Student.id=Teacher_Student.sid and Student.name='张山';
 
 外连接(左连接，右连接)
 

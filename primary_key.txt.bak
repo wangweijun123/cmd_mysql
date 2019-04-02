@@ -1,0 +1,222 @@
+create database wangweijun;
+
+创建主键三种方式
+create table pri_1 (
+    name varchar(10) primary key
+);
+
+
+create table pri_2 (
+    name varchar(10),
+    primary key(name)
+);
+
+create table pri_3 (
+    name varchar(10)
+);
+
+alter table pri_3 add primary key(name);
+
+
+联合主键
+
+create table StudenScore(
+    sid int,
+    classid int,
+    score int,
+    primary key(sid, classid)
+);
+
+insert into StudenScore values(1,1,100);
+insert into StudenScore values(2,1,100);
+
+
+主键自动增长
+
+create table my_auto(
+  id int primary key auto_increment,
+  name varchar(10) not null,
+  pwd varchar(10) not null
+)charset utf8;
+
+insert into my_auto values(null, 'wang', '1027');
+
+
+唯一键
+
+create table my_unique(
+    id int primary key auto_increment,
+    name varchar(10) unique
+);
+
+insert into my_unique values(null, null);
+insert into my_unique values(null, null);
+
+insert into my_unique values(null, 'wang');
+insert into my_unique values(null, 'wang');
+
+
+create table my_unique2(
+    id int primary key auto_increment,
+    name varchar(10),
+    unique key(name)
+);
+
+create table my_unique3(
+    id int primary key auto_increment,
+    name varchar(10)
+);
+
+alter table my_unique3 add unique key(name);
+
+删除唯一键
+
+alter table my_unique3 drop index name;
+
+
+create table my_student(
+    id int primary key auto_increment,
+    name varchar(10),
+    class_id int,
+    age int,
+    height int
+)charset utf8;
+
+set names gbk;
+
+insert into my_student(id,name,class_id,age,height,gender) values(null,'stu05',1, 22, 185,'男'), (null,'stu02',1, 23, 185,'男');
+
+insert into my_student(id,name,class_id,age,height) values(null,'stu07',3, 25, 156), (null,'stu08',3, 26, 145);
+
+select * from my_student;
+
+
+分组查询
+select class_id from my_student group by class_id;
+
+
+select class_id, count(*) from my_student group by class_id;
+
+聚合函数 avg, max, min
+select class_id, count(*), avg(age) from my_student group by class_id;
+
+
+select class_id, count(*), avg(age),max(age),min(age) from my_student group by class_id;
+
+
+
+
+
+select class_id, count(*),group_concat(name), avg(age),max(age),min(age) from my_student group by class_id;
+
+错误的查询
+select class_id,name, count(*),group_concat(name), avg(age),max(age),min(age) from my_student group by class_id;
+
+
+alter table my_student add column gender enum('男','女','保密');
+
+
+注意枚举字段，插入的时候，可以按照enum的值列表的顺序插入，从一开始
+或者直接用emun值插入
+update my_student set gender=1 where id in (1,3);
+
+update my_student set gender='女' where id in (2,4);
+
+
+select class_id, count(*) from my_student group by class_id;
+
+多分组，也就是按照多个字段分组，一个字段分完之后然后按照下一个分组
+select class_id, count(*),gender from my_student group by class_id,gender;
+
+
+一班男生有多少人
+select class_id, count(*),gender from my_student  where class_id=1 and gender='男';
+
+多分组
+select class_id, count(*) from my_student group by class_id;
+select class_id, count(*), gender from my_student group by class_id,gender;
+
+分组后排序
+
+select class_id, count(*), gender from my_student group by class_id desc,gender;
+
+
+having(where)   order by    limit
+
+
+select class_id,count(*) from my_student group by class_id;
+
+查询大于4个人的班级；
+
+select class_id,count(*) from my_student group by class_id having  count(*)>3;
+
+正确的做法
+select class_id,count(*) as number from my_student group by class_id having  number>3;
+
+// 不能用where
+select class_id,count(*) as number from my_student group by class_id where  number>3;
+// 不能用where
+select class_id,count(*) as number from my_student  where  number>3 group by class_id;
+
+where 是从磁盘读取数据，分完组后数据已经到了内存,所以having 一定与group by 连用
+
+
+
+select * from my_student where class_id=1 or class_id=2;
+select * from my_student where class_id in(1,2);
+
+select class_id,count(*) from my_student where class_id in(1,2) group by class_id;
+
+
+select class_id,count(*) from my_student where class_id in(1,2) group by class_id having count(*)>3;
+
+
+order by  多字段排序,优先第一个字段排序，然后依次排序
+
+select * from my_student order by height;
+
+
+select * from my_student order by height, class_id;
+
+select * from my_student order by class_id,height;
+
+like 模糊匹配
+
+select * from my_student where name like 'stu%'
+
+去重
+
+select age from my_student;
+
+
+select distinct(age) from my_student;
+
+
+select * from my_student group by gender;
+
+select gender from my_student group by gender;
+
+
+select * from my_student where gender='男' order by height;
+
+select * from my_student where gender='女' order by height desc;
+
+
+********联合查询***********
+联合查询(同一张表查询,注意括号)
+(select * from my_student where gender='男' order by height)
+union
+(select * from my_student where gender='女' order by height desc);
+
+(select * from my_student where gender='男' order by height limit 10)
+union
+(select * from my_student where gender='女' order by height desc limit 10);
+
+
+
+获取男生身高升序，女生降序
+
+
+select * from my_student order by gender,height;
+多字段排序,也有多字段分组
+select * from my_student where gender is not null order by gender,height;
