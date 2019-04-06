@@ -1,0 +1,77 @@
+create database foreignkey;
+
+drop database foreignkey;
+
+create database fk;
+
+
+create table class(
+    id int primary key auto_increment,
+    name varchar(10)
+)charset utf8;
+
+
+insert into class values(null, '一班');
+insert into class values(null, '二班');
+insert into class values(null, '三班');
+
+select * from class;
+
+create table my_student(
+    id int primary key auto_increment,
+    name varchar(10),
+    class_id int,
+    -- 增加外键
+    foreign key(class_id) references class(id)
+)charset utf8;
+
+-- 正确
+insert into my_student values(null, '张三',1);
+
+-- 错误 (因为主表中没有这class(id)=4)
+insert into my_student values(null, '张三',4);
+insert into my_student values(null, '张三',null);
+
+
+select * from my_student;
+
+
+-- 错误  删除主表id=1失败，因为已经被从表引用这个值
+delete from class where id=1;
+
+delete from class where id=2;
+
+--  是不行的
+update class set id=4 where id=1;
+
+
+
+  事务日志(相当于是缓存)  与  数据表 
+
+
+  事务特点也是事务安全
+
+  1 原子性 
+  2一致性   
+  3隔离性(锁表，锁行)
+  4持久性
+
+
+  -- 开启事务(其实也是加了锁)
+  start transaction;
+  提交事务
+  commit;
+
+  update my_student set name='赵六' where id=3;
+
+事务日志  数据表
+
+
+update my_student set name='aaaaaa';
+
+
+表所，行锁(这里的锁是数据库自己家的哦)
+
+锁住整个表
+
+update my_student set name='aaaaaa';
