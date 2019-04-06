@@ -1,0 +1,28 @@
+数据库备份与还原
+
+
+create table backup(
+   id int primary key auto_increment
+)charset utf8;
+
+create table backup2(
+   id int primary key auto_increment
+)charset utf8;
+
+create table backup3(
+   id int primary key auto_increment
+)charset utf8;
+
+
+insert into backup2 values(null);
+
+
+
+备份: 到底备份了什么，备份的是 sql语句所有的
+整困备份: 
+mysqldump -h127.0.0.1 -uroot -p123456 wwj > f:/backupfile.sql
+
+
+还原:
+
+mysql -h127.0.0.1 -uroot -p123456 wwj < backupfile.sql
