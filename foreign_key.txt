@@ -62,7 +62,7 @@ update class set id=4 where id=1;
   提交事务
   commit;
 
-  update my_student set name='赵六' where id=3;
+  update my_student set name='赵六bbbb' where id=3;
 
 事务日志  数据表
 
@@ -75,3 +75,35 @@ update my_student set name='aaaaaa';
 锁住整个表
 
 update my_student set name='aaaaaa';
+
+
+
+行锁，表锁
+
+事务安全（行锁，表锁）
+
+存储过程 == 函数
+
+触发器 : 触发时机，自动调用, 多条sql语句加事务的时候不用了
+
+
+触发时机 before/after   insert/delete/update  组合使用
+
+生成一个订单，减少一个库存
+
+
+
+ sql 生成订单之前， before/insert   执行触发器，判断库存
+
+ 生成订单之后, after/insert   执行触发器，减少库存
+
+
+ import turtle as t 
+ t.pencolor("red") 
+ t.left(45) 
+ t.circle(-60,180) 
+ t.forward(120) 
+ t.right(90) 
+ t.forward(120) 
+ t.circle(-60,180)
+
